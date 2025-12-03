@@ -1,0 +1,13 @@
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\bin\Debug\Gioco dell'oca.exe.config
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\bin\Debug\Gioco dell'oca.exe
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\bin\Debug\Gioco dell'oca.pdb
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\obj\Debug\Gioco dell'oca.csproj.AssemblyReference.cache
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\obj\Debug\Gioco_dell_oca.Properties.Resources.resources
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\obj\Debug\Gioco dell'oca.csproj.GenerateResource.cache
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\obj\Debug\Gioco dell'oca.csproj.CoreCompileInputs.cache
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\obj\Debug\Gioco dell'oca.exe
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\obj\Debug\Gioco dell'oca.pdb
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\obj\Debug\Gioco dell'oca.exe.config
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\obj\Debug\Gioco_dell_oca.GamePlay.resources
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\obj\Debug\Gioco_dell_oca.SelectPlayer.resources
+E:\Progetti info 4aBII\Gioco dell'oca\Gioco dell'oca\obj\Debug\Gioco_dell_oca.FormNumeroGiocatori.resources
