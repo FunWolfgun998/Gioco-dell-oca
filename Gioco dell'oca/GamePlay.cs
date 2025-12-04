@@ -163,7 +163,7 @@ namespace Gioco_dell_oca
             lbl.Dock = DockStyle.Fill;
             lbl.TextAlign = ContentAlignment.MiddleCenter;
             lbl.BackColor = Color.Transparent;
-            lbl.ForeColor = (bgImage != null) ? Color.DarkOrange : Color.Green;
+            lbl.ForeColor = (bgImage != null) ? Color.DarkOrange : Color.YellowGreen;
 
             p.Controls.Add(lbl);
             this.Controls.Add(p);

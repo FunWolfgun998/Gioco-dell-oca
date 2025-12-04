@@ -18,60 +18,51 @@ namespace Gioco_dell_oca
         public FormNumeroGiocatori()
         {
             InitializeComponent();
-            // Impostazioni per rendere la finestra più pulita
+
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
 
-            // --- IMPOSTAZIONI GRAFICHE ---
-            // Imposto le dimensioni del form
             this.ClientSize = new Size(300, 200);
             this.Text = "Setup Partita";
 
-            // Associo l'evento Load per centrare i controlli
             this.Load += new EventHandler(FormNumeroGiocatori_Load);
         }
 
         private void FormNumeroGiocatori_Load(object sender, EventArgs e)
         {
-            // --- CENTRATURA AUTOMATICA DEI CONTROLLI ---
 
             int larghezzaControlli = 150;
             int spacing = 15; // Spazio verticale tra i controlli
 
-            // 1. Label (lbl_n_giocatori)
-            lbl_n_giocatori.AutoSize = false; // Disattivo AutoSize per centrare il testo
-            lbl_n_giocatori.Size = new Size(this.ClientSize.Width - 40, 30); // Larga quasi tutto il form
+            lbl_n_giocatori.AutoSize = false;
+            lbl_n_giocatori.Size = new Size(this.ClientSize.Width - 40, 30);
             lbl_n_giocatori.TextAlign = ContentAlignment.MiddleCenter;
             lbl_n_giocatori.Location = new Point(
-                (this.ClientSize.Width - lbl_n_giocatori.Width) / 2, // Centrata orizzontalmente
-                20 // Margine dall'alto
+                (this.ClientSize.Width - lbl_n_giocatori.Width) / 2,
+                20
             );
 
-            // 2. NumericUpDown (nmr_Giocatori)
             nmr_Giocatori.Size = new Size(larghezzaControlli, 30);
             nmr_Giocatori.Location = new Point(
-                (this.ClientSize.Width - nmr_Giocatori.Width) / 2, // Centrata orizzontalmente
-                lbl_n_giocatori.Bottom + spacing // Posizionata sotto la label
+                (this.ClientSize.Width - nmr_Giocatori.Width) / 2,
+                lbl_n_giocatori.Bottom + spacing
             );
-            nmr_Giocatori.Font = new Font(nmr_Giocatori.Font.FontFamily, 12); // Rendo il numero più grande
+            nmr_Giocatori.Font = new Font(nmr_Giocatori.Font.FontFamily, 12);
 
-            // 3. Button (btt_done)
-            btt_done.Size = new Size(larghezzaControlli, 40); // Pulsante un po' più alto
+            btt_done.Size = new Size(larghezzaControlli, 40);
             btt_done.Location = new Point(
-                (this.ClientSize.Width - btt_done.Width) / 2, // Centrata orizzontalmente
-                nmr_Giocatori.Bottom + spacing // Posizionata sotto il NumericUpDown
+                (this.ClientSize.Width - btt_done.Width) / 2,
+                nmr_Giocatori.Bottom + spacing
             );
         }
 
 
         private void btt_done_Click(object sender, EventArgs e)
         {
-            // Salvo il valore scelto nel NumericUpDown
             this.NumeroDiGiocatori = (int)nmr_Giocatori.Value;
 
-            // Imposto il risultato a OK e chiudo la finestra
             this.DialogResult = DialogResult.OK;
             this.Close();
         }
