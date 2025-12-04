@@ -35,7 +35,6 @@ namespace Gioco_dell_oca
 
         private void GamePlay_Load(object sender, EventArgs e)
         {
-            // --- NUOVA LOGICA: CHIEDI NUMERO GIOCATORI ---
             int numeroGiocatori;
             using (FormNumeroGiocatori formNum = new FormNumeroGiocatori())
             {
@@ -45,13 +44,10 @@ namespace Gioco_dell_oca
                 }
                 else
                 {
-                    // Se l'utente chiude la finestra, chiudi l'applicazione
                     this.Close();
                     return;
                 }
             }
-            // ---------------------------------------------
-
             // Metodo che controlla che tutto sia andato a buon fine durante la scelta delle pedine
             // Se l'utente ha annullato la selezione, il gioco chiude
             if (!SelezionaGiocatori(numeroGiocatori))
@@ -60,12 +56,12 @@ namespace Gioco_dell_oca
                 return;
             }
 
-            // Generiamo graficamente il tabellone di gioco
+            // Genera tutte le caselle graficamente a form spirale
             GeneraPercorsoSpiraleRotonda();
 
-            // Posizioniamo le pedine iniziali dei giocatori
+            // Genera e posizione a casella "0"
             PosizionaPedineIniziali();
-
+            //imposta UI tramite codice
             InizializzaControlliDiGioco();
             IniziaTurno(); // Avvia il primo turno
         }
@@ -100,9 +96,9 @@ namespace Gioco_dell_oca
         private void GeneraPercorsoSpiraleRotonda()
         {
             int dimCasella = 65;
-            double raggioIniziale = this.ClientSize.Height / 2.0 - dimCasella;
-            double raggioFinale = 150;
-            double giriTotali = 2.9;
+            double raggioIniziale = 380;
+            double raggioFinale = 130; //spazio all'interno del 
+            double giriTotali = 3.25;
             double offsetAngolo = Math.PI;
             List<int> caselleOca = new List<int> { 5, 9, 18, 27, 36, 45, 54 };// Celle oca
             int centerX = this.ClientSize.Width / 2;
@@ -122,7 +118,7 @@ namespace Gioco_dell_oca
                 x -= dimCasella / 2;
                 y -= dimCasella / 2;
 
-                Color coloreSfondo = Color.WhiteSmoke;
+                Color coloreSfondo = Color.DarkGreen;
                 Image immagineSfondo = null;
                 if (caselleOca.Contains(numeroCasella)) { immagineSfondo = Properties.Resources.oca; }
                 else
@@ -167,7 +163,7 @@ namespace Gioco_dell_oca
             lbl.Dock = DockStyle.Fill;
             lbl.TextAlign = ContentAlignment.MiddleCenter;
             lbl.BackColor = Color.Transparent;
-            lbl.ForeColor = (bgImage != null) ? Color.DarkOrange : Color.Black;
+            lbl.ForeColor = (bgImage != null) ? Color.DarkOrange : Color.Green;
 
             p.Controls.Add(lbl);
             this.Controls.Add(p);
@@ -176,12 +172,12 @@ namespace Gioco_dell_oca
         }
         private void PosizionaPedineIniziali()
         {
-            int offsetBase = -20 * (giocatori.Count / 2); // Calcola l'offset iniziale per centrare il gruppo
+            int offsetBase = 0;
 
             for (int i = 0; i < giocatori.Count; i++)
             {
                 Player p = giocatori[i];
-                int offsetCorrente = offsetBase + (i * 40);
+                int offsetCorrente = offsetBase + (i * 35);
 
                 PictureBox container = new PictureBox();
                 container.Size = new Size(70, 70);
@@ -285,8 +281,7 @@ namespace Gioco_dell_oca
                 MessageBox.Show($"{giocatoreCorrente.nome} ha vinto la partita!", "Vittoria!");
                 btnLanciaDadi.Enabled = false;
                 lblTurnoInfo.Text = "Fine del gioco!";
-
-                // --- NUOVA LOGICA: CHIEDI SE RIGIOCARE ---
+                //Richiesta restart gioco
                 DialogResult scelta = MessageBox.Show("Vuoi fare un'altra partita?", "Fine Gioco", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
                 if (scelta == DialogResult.Yes)
                 {
@@ -294,9 +289,8 @@ namespace Gioco_dell_oca
                 }
                 else
                 {
-                    Application.Exit(); // Chiude l'applicazione
+                    Application.Exit(); 
                 }
-                // ------------------------------------------
                 return;
             }
 
@@ -323,7 +317,7 @@ namespace Gioco_dell_oca
                 if (altroGiocatore != giocatoreAttivo && altroGiocatore.casella_attuale == giocatoreAttivo.casella_attuale)
                 {
                     MessageBox.Show($"{giocatoreAttivo.nome} è finito sulla casella di {altroGiocatore.nome}, che torna al posto di {giocatoreAttivo.nome}!", "Collisione!");
-                    altroGiocatore.casella_attuale = giocatoreAttivo.casella_attuale - movimento; // Manda l'altro giocatore alla partenza
+                    altroGiocatore.casella_attuale = giocatoreAttivo.casella_attuale - movimento; // Manda l'altro giocatore alla posizione del primo giocatore
                     int indiceAltroGiocatore = giocatori.IndexOf(altroGiocatore);
                     await MuoviGiocatore(indiceAltroGiocatore, altroGiocatore.casella_attuale); // Aggiorna la sua posizione grafica
                     break; // Esco dal ciclo, non ci possono essere due giocatori sulla stessa casella
@@ -402,7 +396,7 @@ namespace Gioco_dell_oca
         private async void AzioneScheletro(object sender, EventArgs e)
         {
             Player p = sender as Player;
-            MessageBox.Show("Scheletro! Che paura! Torni all'inizio!", "Scheletro!");
+            MessageBox.Show("Trovi uno scheletro e muori di infarto. Torni all'inizio", "Scheletro!");
             p.casella_attuale = 0;
             await MuoviGiocatore(giocatori.IndexOf(p), p.casella_attuale);
         }
@@ -413,25 +407,31 @@ namespace Gioco_dell_oca
         }
         private async Task MuoviGiocatore(int indiceGiocatore, int nuovaCasella)
         {
+            //caso vittoria
             if (nuovaCasella > NUM_CASELLE) nuovaCasella = NUM_CASELLE;
 
             PictureBox contenitoreDaMuovere = contenitoriPedine[indiceGiocatore];
-            Point nuovoCentro;
+            Point centroCasella;
 
             if (nuovaCasella <= 0)
             {
+
                 int offsetBase = -20 * (giocatori.Count / 2);
                 int offsetCorrente = offsetBase + (indiceGiocatore * 40);
-                nuovoCentro = new Point(coordinateCaselle[1].X - 80, coordinateCaselle[1].Y);
-                contenitoreDaMuovere.Location = new Point(nuovoCentro.X - contenitoreDaMuovere.Width / 2 + offsetCorrente, nuovoCentro.Y - contenitoreDaMuovere.Height / 2);
+                centroCasella = new Point(coordinateCaselle[1].X - 80, coordinateCaselle[1].Y);
+
+                contenitoreDaMuovere.Location = new Point(
+                    centroCasella.X - contenitoreDaMuovere.Width / 2 + offsetCorrente,
+                    centroCasella.Y - contenitoreDaMuovere.Height / 2
+                );
             }
             else
             {
-                int offset = -20 * (giocatori.Count(p => p.casella_attuale == nuovaCasella && p != giocatori[indiceGiocatore]) / 2);
-                offset += giocatori.Where(p => p.casella_attuale == nuovaCasella && p != giocatori[indiceGiocatore]).ToList().IndexOf(giocatori[indiceGiocatore]) * 40;
-
-                nuovoCentro = coordinateCaselle[nuovaCasella];
-                contenitoreDaMuovere.Location = new Point(nuovoCentro.X - contenitoreDaMuovere.Width / 2 + offset, nuovoCentro.Y - contenitoreDaMuovere.Height / 2 - 10);
+                centroCasella = coordinateCaselle[nuovaCasella];
+                contenitoreDaMuovere.Location = new Point(
+                    centroCasella.X - (contenitoreDaMuovere.Width / 2),
+                    centroCasella.Y - (contenitoreDaMuovere.Height / 2) 
+                );
             }
 
             contenitoreDaMuovere.BringToFront();
